@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func CallGemini(diff string, mode string) string {
+func CallGemini(diff string, mode string, maxTokens int) string {
 	if mode == "cancel" {
 		return "Analyse annulée."
 	}
@@ -57,7 +57,7 @@ Si aucun problème trouvé : réponds uniquement le mot RAS, rien d'autre, ne me
 			},
 		},
 		"generationConfig": map[string]interface{}{
-			"maxOutputTokens": 100,
+			"maxOutputTokens": maxTokens,
 		},
 	}
 

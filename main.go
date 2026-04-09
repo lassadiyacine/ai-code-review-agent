@@ -26,6 +26,11 @@ func main() {
 	}
 
 	mode := agent.GetMode()
-	result := agent.CallGemini(string(output), mode)
+	length := agent.AskLength()
+	if length == 0 {
+		fmt.Println("Analyse annulée.")
+		os.Exit(0)
+	}
+	result := agent.CallGemini(string(output), mode, length)
 	fmt.Println(result)
 }
