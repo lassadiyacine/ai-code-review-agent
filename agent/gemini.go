@@ -34,7 +34,7 @@ func CallGemini(diff string, mode string) string {
 	case "security":
 		prompt = `Tu es un expert sécurité. Analyse ce diff et liste uniquement les failles de sécurité.
 Format : [fichier.go] nomFonction: description courte de la faille.
-Si aucun problème : réponds uniquement RAS. Ne cherche pas à tout prix des problèmes.`
+Si aucun problème : réponds uniquement RAS, ne mets jamais RAS si tu as déjà listé des problèmes. Ne cherche pas à tout prix des problèmes.`
 
 	case "summary":
 		prompt = `Résume ce diff en 2-3 phrases maximum.
@@ -44,7 +44,7 @@ Dis ce qui a changé, pas comment.`
 		prompt = `Tu es un expert code. Analyse ce diff et liste uniquement les problèmes de qualité et de logique.
 Ne mentionne jamais les failles de sécurité, même pour dire que tu les ignores.
 Format strict : [fichier.go] fonction: problème. Une ligne par problème, max 5.
-Si aucun problème trouvé : réponds uniquement le mot RAS, rien d'autre. Ne cherche pas à tout prix des problèmes.`
+Si aucun problème trouvé : réponds uniquement le mot RAS, rien d'autre, ne mets jamais RAS si tu as déjà listé des problèmes. Ne cherche pas à tout prix des problèmes.`
 	}
 	prompt += "\n\n" + diff
 
