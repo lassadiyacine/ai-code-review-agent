@@ -29,23 +29,17 @@ func CallGemini(diff string, mode string, maxTokens int) string {
 		return "Erreur : variable d'environnement GEMINI_API_KEY non définie."
 	}
 
+	config := LoadConfig()
 	var prompt string
 	switch mode {
 	case "security":
-		prompt = `Tu es un expert sécurité. Analyse ce diff et liste uniquement les failles de sécurité.
-Format : [fichier.go] nomFonction: description courte de la faille.
-Si aucun problème : réponds uniquement RAS, ne mets jamais RAS si tu as déjà listé des problèmes. Ne cherche pas à tout prix des problèmes.`
-
+		prompt = config.SecurityPrompt
 	case "summary":
-		prompt = `Résume ce diff en 2-3 phrases maximum.
-Dis ce qui a changé, pas comment.`
-
-	default: // review
-		prompt = `Tu es un expert code. Analyse ce diff et liste uniquement les problèmes de qualité et de logique.
-Ne mentionne jamais les failles de sécurité, même pour dire que tu les ignores.
-Format strict : [fichier.go] fonction: problème. Une ligne par problème, max 5.
-Si aucun problème trouvé : réponds uniquement le mot RAS, rien d'autre, ne mets jamais RAS si tu as déjà listé des problèmes. Ne cherche pas à tout prix des problèmes.`
+		prompt = config.SummaryPrompt
+	default:
+		prompt = config.ReviewPrompt
 	}
+
 	prompt += "\n\n" + diff
 
 	reqBody := map[string]interface{}{
