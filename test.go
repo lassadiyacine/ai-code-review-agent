@@ -13,7 +13,7 @@ func divide(a int, b int) int {
 
 // Récupère un utilisateur depuis la DB
 func getUser(id string) string {
-	query := "SELECT * FROM users WHERE id = " + id
+
 	return query
 }
 
