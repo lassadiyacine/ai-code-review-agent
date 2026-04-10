@@ -25,6 +25,15 @@ func main() {
 		}
 	}
 
+	// Vérifier si c'est un preset
+	if len(os.Args) > 1 {
+		if preset, exists := agent.GetPreset(os.Args[1]); exists {
+			result := agent.CallGemini(string(output), preset.Mode, preset.MaxTokens)
+			fmt.Println(result)
+			return
+		}
+	}
+
 	mode := agent.GetMode()
 	length := agent.AskLength()
 	if length == 0 {
