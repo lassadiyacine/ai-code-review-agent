@@ -1,15 +1,23 @@
 package agent
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+var reader = bufio.NewReader(os.Stdin)
+
+func readLine() string {
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input)
+}
 
 func AskReview() bool {
 	fmt.Print("Voulez-vous une review avant de commit ? (o/n) > ")
-	var choix string
-	_, err := fmt.Scan(&choix)
-	if err != nil {
-		return false
-	}
-	return choix == "o" || choix == "O"
+	input := readLine()
+	return input == "o" || input == "O"
 }
 
 func AskMode() string {
@@ -20,13 +28,7 @@ func AskMode() string {
 	fmt.Println("4. Annuler")
 	fmt.Print("> ")
 
-	var choix string
-	_, err := fmt.Scan(&choix)
-	if err != nil {
-		return "review"
-	}
-
-	switch choix {
+	switch readLine() {
 	case "1":
 		return "review"
 	case "2":
@@ -48,13 +50,7 @@ func AskLength() int {
 	fmt.Println("4. Annuler")
 	fmt.Print("> ")
 
-	var choix string
-	_, err := fmt.Scan(&choix)
-	if err != nil {
-		return 100
-	}
-
-	switch choix {
+	switch readLine() {
 	case "1":
 		return 100
 	case "2":

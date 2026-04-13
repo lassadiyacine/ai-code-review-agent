@@ -16,6 +16,8 @@ func GetMode() string {
 		return "review"
 	case "--summary":
 		return "summary"
+	case "--file", "--dir":
+		return AskMode()
 	default:
 		return "review"
 	}

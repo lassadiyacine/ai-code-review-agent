@@ -13,7 +13,7 @@ func main() {
 	// Review directe sans commit
 	if len(os.Args) > 1 && os.Args[1] == "--file" {
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: go run . --file <fichier.go>")
+			fmt.Println("Usage: ./agent.exe --file <fichier.go>")
 			os.Exit(1)
 		}
 		content, err := os.ReadFile(os.Args[2])
@@ -32,6 +32,32 @@ func main() {
 			os.Exit(0)
 		}
 		result := agent.CallGemini(string(content), mode, length)
+		fmt.Println(result)
+		return
+	}
+
+	// Review directe sur un dossier
+	if len(os.Args) > 1 && os.Args[1] == "--dir" {
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: ./agent.exe --dir <dossier>")
+			os.Exit(1)
+		}
+		content, err := agent.ReadDir(os.Args[2])
+		if err != nil {
+			fmt.Println("Erreur lecture dossier:", err)
+			os.Exit(1)
+		}
+		mode := agent.GetMode()
+		if mode == "cancel" {
+			fmt.Println("Analyse annulée.")
+			os.Exit(0)
+		}
+		length := agent.AskLength()
+		if length == 0 {
+			fmt.Println("Analyse annulée.")
+			os.Exit(0)
+		}
+		result := agent.CallGemini(content, mode, length)
 		fmt.Println(result)
 		return
 	}
@@ -65,7 +91,6 @@ func main() {
 		fmt.Println("Analyse annulée.")
 		os.Exit(0)
 	}
-
 	length := agent.AskLength()
 	if length == 0 {
 		fmt.Println("Analyse annulée.")
